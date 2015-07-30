@@ -40,20 +40,15 @@ public class ThumbnailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /**
-         * create Instance of ImageAdapter class
-         */
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-
         // insert layout
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // adapt fake thumbnails to grid
         // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-        gridView.setAdapter(imageAdapter);
+        gridView.setAdapter(new ImageAdapter(getActivity()));
 
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return rootView;
     }
 
     @Override
@@ -99,7 +94,7 @@ public class ThumbnailFragment extends Fragment {
             /**
              * INSERT YOUR API KEY BEFORE STARTING PROGRAM!
              */
-            String api_key = "[YOUR API KEY]";
+            String api_key = "insertapikey";
 
             try {
                 // Construct the Uri for the themoviedb query
