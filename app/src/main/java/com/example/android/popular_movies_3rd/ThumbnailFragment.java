@@ -41,7 +41,8 @@ public class ThumbnailFragment extends Fragment {
         // insert layout
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // adapt thumbs to grid
+        // adapt fake thumbnails to grid
+        // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
         gridView.setAdapter(imageAdapter);
 
@@ -65,7 +66,6 @@ public class ThumbnailFragment extends Fragment {
             FetchMoviesTask movieData = new FetchMoviesTask();
             movieData.execute();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
