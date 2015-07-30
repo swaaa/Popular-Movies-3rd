@@ -11,9 +11,9 @@ import android.widget.GridView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class ThumbnailFragment extends Fragment {
 
-    public MainActivityFragment() {
+    public ThumbnailFragment() {
     }
 
     @Override

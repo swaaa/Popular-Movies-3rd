@@ -14,7 +14,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment, new MainActivityFragment())
+                    .add(R.id.fragment, new ThumbnailFragment())
                     .commit();
         }
     }
