@@ -42,9 +42,7 @@ public class ThumbnailFragment extends Fragment {
         gridView.setAdapter(imageAdapter);
 
         /**
-         * fetch movies
-         * 1 thumbnails
-         * 2 everything sort by
+         * sort grid by fetching data
          */
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.

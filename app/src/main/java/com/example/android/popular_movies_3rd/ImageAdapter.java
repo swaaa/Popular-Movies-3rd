@@ -55,7 +55,7 @@ public class ImageAdapter extends BaseAdapter {
             thumbnail = (ImageView) convertView;
         }
         /**
-         * set ImageResource auf Picasso load in?
+         * replace fake thumbnails with real ones
          */
         thumbnail.setImageResource(mThumbnailIds[position]);
         return thumbnail;
