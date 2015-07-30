@@ -24,8 +24,10 @@ public class MainActivityFragment extends Fragment {
          */
         ImageAdapter imageAdapter = new ImageAdapter(getActivity());
 
+        // insert layout
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // adapt thumbs to grid
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
         gridView.setAdapter(imageAdapter);
 
