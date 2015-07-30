@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,16 +77,45 @@ public class ThumbnailFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchMoviesTask movieData = new FetchMoviesTask();
-            movieData.execute("popularity.desc"); // hardcoding before sorting feature
+            FetchMoviesTask moviesTask = new FetchMoviesTask();
+            moviesTask.execute("popularity.desc"); // hardcoding before sorting feature
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
+
+        private String[] getMoviesDataFromJson(String moviesJsonStr, int numMovies)
+                throws JSONException {
+
+            // These are the names of the JSON objects that need to be extracted.
+            final String TMDB_RESULTS = "results";
+            final String TMDB_TITLE = "original_title";
+            final String TMDB_POSTER_PATH = "poster_path";
+            final String TMDB_OVERVIEW = "overview";
+            final String TMDB_VOTE_AVERAGE = "vote_average";
+            final String TMDB_RELEASE_DATE = "release_date";
+
+            JSONObject moviesJson = new JSONObject(moviesJsonStr);
+            JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
+
+            String[] resultStrs = new String[numMovies];
+            for(int i = 0; i < moviesArray.length(); i++) {
+                /**
+                 * Design movie data output
+                 */
+                resultStrs[i] = "Test " + i;
+            }
+
+            for (String s : resultStrs) {
+                Log.v(LOG_TAG, "Forecast entry: " + s);
+            }
+            return resultStrs;
+        }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
 
             // no point in refresh with no sort order
             if (params.length == 0) {
@@ -165,6 +198,11 @@ public class ThumbnailFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
+            }
+            try {
+                return getMoviesDataFromJson(moviesJsonStr, 10);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Couldn't return movie data from " + moviesJsonStr);
             }
             return null;
         }
