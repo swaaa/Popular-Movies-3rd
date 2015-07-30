@@ -1,5 +1,6 @@
 package com.example.android.popular_movies_3rd;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,15 +65,21 @@ public class ThumbnailFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchMoviesTask movieData = new FetchMoviesTask();
-            movieData.execute();
+            movieData.execute("popularity"); // hardcoding before sorting feature
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
+
+            // no point in refresh with no sort order
+            if (params.length == 0) {
+                return null;
+            }
+
             /**
              * sort grid by fetching data
              */
@@ -83,12 +90,24 @@ public class ThumbnailFragment extends Fragment {
 
             // Will contain the raw JSON response as a string.
             String moviesJsonStr = null;
+            /**
+             * INSERT YOUR API KEY BEFORE STARTING PROGRAM!
+             */
+            String api_key = "[YOUR API KEY]";
 
             try {
-                // Construct the URL for the themoviedb query
-                URL url = new URL("http://api.themoviedb.org/3/discover/movie?"
-                        + "sort_by=popularity.desc" // sort by
-                        + "&api_key=[YOUR API KEY]"); // api key
+                // Construct the Uri for the themoviedb query
+                final String MOVIES_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
+                final String SORT_PARAM = "sort_by";
+                final String API_KEY_PARAM = "api_key";
+
+                Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                        .appendQueryParameter(SORT_PARAM, params[0])
+                        .appendQueryParameter(API_KEY_PARAM, api_key)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+                Log.v(LOG_TAG, "Built URL: " + url);
 
                 // Create the request to themoviedb, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
