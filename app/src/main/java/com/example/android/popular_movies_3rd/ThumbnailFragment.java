@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.io.BufferedReader;
@@ -47,6 +48,13 @@ public class ThumbnailFragment extends Fragment {
         // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
         gridView.setAdapter(new ImageAdapter(getActivity()));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // show details
+            }
+        });
 
         return rootView;
     }
