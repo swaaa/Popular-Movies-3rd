@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 
 /**
@@ -19,9 +20,14 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         /**
-         * create ArrayAdapter
-         *
+         * create Instance of ImageAdapter class
          */
+        ImageAdapter imageAdapter = new ImageAdapter(getActivity());
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        GridView gridView = (GridView) rootView.findViewById(R.id.grid);
+        gridView.setAdapter(imageAdapter);
 
         return inflater.inflate(R.layout.fragment_main, container, false);
     }

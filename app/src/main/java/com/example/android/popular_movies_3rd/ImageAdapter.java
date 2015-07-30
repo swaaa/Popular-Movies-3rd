@@ -54,7 +54,9 @@ public class ImageAdapter extends BaseAdapter {
             // is recycled? use it
             thumbnail = (ImageView) convertView;
         }
-
+        /**
+         * set ImageResource auf Picasso load in?
+         */
         thumbnail.setImageResource(mThumbnailIds[position]);
         return thumbnail;
     }
