@@ -101,7 +101,7 @@ public class ThumbnailFragment extends Fragment {
             JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
 
             String[] resultStrs = new String[numMovies];
-            for(int i = 0; i < moviesArray.length(); i++) {
+            for(int i = 0; i < numMovies; i++) {
 
                 String title;
                 String poster_path;
@@ -124,7 +124,6 @@ public class ThumbnailFragment extends Fragment {
                         + "vote_average: " + vote_average + "\n"
                         + "release_date: " + release_date + "\n";
             }
-
             for (String s : resultStrs) {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
             }
@@ -217,6 +216,7 @@ public class ThumbnailFragment extends Fragment {
                 }
             }
             try {
+                // hardcode maximum of movies in grid
                 return getMoviesDataFromJson(moviesJsonStr, 10);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Couldn't return movie data from " + moviesJsonStr);
