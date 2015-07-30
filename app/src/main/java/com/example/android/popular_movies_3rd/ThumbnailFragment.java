@@ -56,9 +56,9 @@ public class ThumbnailFragment extends Fragment {
 
         try {
             // Construct the URL for the themoviedb query
-            // Possible parameters are available at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            URL url = new URL("http://api.themoviedb.org/3/discover/movie?"
+                    + "sort_by=popularity.desc" // sort by
+                    + "&api_key=[YOUR API KEY]"); // api key
 
             // Create the request to themoviedb, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
