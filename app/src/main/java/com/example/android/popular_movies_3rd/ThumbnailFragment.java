@@ -91,7 +91,7 @@ public class ThumbnailFragment extends Fragment {
 
             // These are the names of the JSON objects that need to be extracted.
             final String TMDB_RESULTS = "results";
-            final String TMDB_TITLE = "original_title";
+            final String TMDB_TITLE = "title";
             final String TMDB_POSTER_PATH = "poster_path";
             final String TMDB_OVERVIEW = "overview";
             final String TMDB_VOTE_AVERAGE = "vote_average";
@@ -102,10 +102,27 @@ public class ThumbnailFragment extends Fragment {
 
             String[] resultStrs = new String[numMovies];
             for(int i = 0; i < moviesArray.length(); i++) {
-                /**
-                 * Design movie data output
-                 */
-                resultStrs[i] = "Test " + i;
+
+                String title;
+                String poster_path;
+                String overview;
+                String vote_average;
+                String release_date;
+
+                // Get the JSON object representing the movie
+                JSONObject movieObject = moviesArray.getJSONObject(i);
+
+                title = movieObject.getString(TMDB_TITLE);
+                poster_path = movieObject.getString(TMDB_POSTER_PATH);
+                overview = movieObject.getString(TMDB_OVERVIEW);
+                vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
+                release_date = movieObject.getString(TMDB_RELEASE_DATE);
+
+                resultStrs[i] = "title: " + title + "\n"
+                        + "poster_path: " + poster_path + "\n"
+                        + "overview: " + overview + "\n"
+                        + "vote_average: " + vote_average + "\n"
+                        + "release_date: " + release_date + "\n";
             }
 
             for (String s : resultStrs) {
