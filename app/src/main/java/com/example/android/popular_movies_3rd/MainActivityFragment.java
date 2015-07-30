@@ -23,7 +23,7 @@ public class MainActivityFragment extends Fragment {
                 R.mipmap.ic_launcher, R.mipmap.ic_launcher,
                 R.mipmap.ic_launcher, R.mipmap.ic_launcher,
                 R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-        }
+        };
 
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
