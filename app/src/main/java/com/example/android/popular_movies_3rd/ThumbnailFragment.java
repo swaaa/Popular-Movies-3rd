@@ -1,5 +1,6 @@
 package com.example.android.popular_movies_3rd;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -41,67 +42,75 @@ public class ThumbnailFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
         gridView.setAdapter(imageAdapter);
 
-        /**
-         * sort grid by fetching data
-         */
-        // These two need to be declared outside the try/catch
-        // so that they can be closed in the finally block.
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
 
-        // Will contain the raw JSON response as a string.
-        String moviesJsonStr = null;
+    public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
-        try {
-            // Construct the URL for the themoviedb query
-            URL url = new URL("http://api.themoviedb.org/3/discover/movie?"
-                    + "sort_by=popularity.desc" // sort by
-                    + "&api_key=[YOUR API KEY]"); // api key
+        @Override
+        protected Void doInBackground(Void... params) {
+            /**
+             * sort grid by fetching data
+             */
+            // These two need to be declared outside the try/catch
+            // so that they can be closed in the finally block.
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
 
-            // Create the request to themoviedb, and open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
+            // Will contain the raw JSON response as a string.
+            String moviesJsonStr = null;
 
-            // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
+            try {
+                // Construct the URL for the themoviedb query
+                URL url = new URL("http://api.themoviedb.org/3/discover/movie?"
+                        + "sort_by=popularity.desc" // sort by
+                        + "&api_key=[YOUR API KEY]"); // api key
+
+                // Create the request to themoviedb, and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                moviesJsonStr = buffer.toString();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error ", e);
+                // If the code didn't successfully get the movie list, there's no point in attempting
+                // to parse it.
                 return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-            moviesJsonStr = buffer.toString();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attemping
-            // to parse it.
-            return null;
-        } finally{
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+            } finally{
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
                 }
             }
+            return null;
         }
-        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 }
