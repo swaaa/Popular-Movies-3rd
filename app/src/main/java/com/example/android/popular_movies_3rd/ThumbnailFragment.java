@@ -66,7 +66,7 @@ public class ThumbnailFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchMoviesTask movieData = new FetchMoviesTask();
-            movieData.execute("popularity"); // hardcoding before sorting feature
+            movieData.execute("popularity.desc"); // hardcoding before sorting feature
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,12 +108,16 @@ public class ThumbnailFragment extends Fragment {
                         .build();
 
                 URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG, "Built URL: " + url);
+                Log.v(LOG_TAG, "Built URL: " + builtUri.toString());
 
                 // Create the request to themoviedb, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
+                try {
+                    urlConnection.connect();
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "URL Error: " + e);
+                }
 
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
