@@ -62,7 +62,7 @@ public class ThumbnailFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // show details
+                // build Intent that starts DetailActivity
             }
         });
         return rootView;
@@ -167,9 +167,7 @@ public class ThumbnailFragment extends Fragment {
 
             // Will contain the raw JSON response as a string.
             String moviesJsonStr = null;
-            /**
-             * INSERT YOUR API KEY BEFORE STARTING PROGRAM!
-             */
+            // Insert before testing
             String api_key = "insertapikey";
 
             try {
