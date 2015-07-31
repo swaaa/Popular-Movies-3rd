@@ -7,27 +7,27 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Mike on 30.07.2015.
  */
 public class ImageAdapter extends BaseAdapter {
 
     private Context mContext;
+    private List<String> mMovieList = new ArrayList<>();
 
-    Integer[] mThumbnailIds = {
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-    };
-
-    public ImageAdapter(Context context){
+    public ImageAdapter(Context context, List<String> movieList){
         mContext = context;
+        mMovieList = movieList;
     }
 
     @Override
     public int getCount() {
-        return mThumbnailIds.length;
+        return mMovieList.size();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ImageAdapter extends BaseAdapter {
         /**
          * replace fake thumbnails with real ones
          */
-        thumbnail.setImageResource(mThumbnailIds[position]);
+        Picasso.with(mContext).load(mMovieList.get(position)).into(thumbnail);
         return thumbnail;
     }
 }

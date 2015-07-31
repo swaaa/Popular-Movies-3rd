@@ -23,7 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,6 +35,7 @@ import java.net.URL;
 public class ThumbnailFragment extends Fragment {
 
     private final String LOG_TAG = ThumbnailFragment.class.getSimpleName();
+    private List<String> movieList = new ArrayList<>();
 
     public ThumbnailFragment() {
     }
@@ -51,7 +55,7 @@ public class ThumbnailFragment extends Fragment {
         // adapt fake thumbnails to grid
         // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-        gridView.setAdapter(new ImageAdapter(getActivity()));
+        gridView.setAdapter(new ImageAdapter(getActivity(), movieList));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,7 +63,6 @@ public class ThumbnailFragment extends Fragment {
                 // show details
             }
         });
-
         return rootView;
     }
 
@@ -112,11 +115,15 @@ public class ThumbnailFragment extends Fragment {
                 // Get the JSON object representing the movie
                 JSONObject movieObject = moviesArray.getJSONObject(i);
 
+                // fetch single Json elements
                 title = movieObject.getString(TMDB_TITLE);
                 poster_path = movieObject.getString(TMDB_POSTER_PATH);
                 overview = movieObject.getString(TMDB_OVERVIEW);
                 vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
                 release_date = movieObject.getString(TMDB_RELEASE_DATE);
+
+                // fetch urls for thumbnails, which will be loaded in grid
+                getThumbnailUrl(poster_path, i);
 
                 resultStrs[i] = "title: " + title + "\n"
                         + "poster_path: " + poster_path + "\n"
@@ -128,6 +135,16 @@ public class ThumbnailFragment extends Fragment {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
             }
             return resultStrs;
+        }
+
+        private void getThumbnailUrl(String poster_path, int index) {
+            try {
+                URL url = new URL("http://image.tmdb.org/t/p/w185" + poster_path);
+                Log.v(LOG_TAG, "Error with URL: " + url);
+                movieList.add(index, url.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
