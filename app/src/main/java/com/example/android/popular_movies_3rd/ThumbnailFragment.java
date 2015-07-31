@@ -36,6 +36,7 @@ public class ThumbnailFragment extends Fragment {
 
     private final String LOG_TAG = ThumbnailFragment.class.getSimpleName();
     private List<String> movieList = new ArrayList<>();
+    ImageAdapter movieAdapter;
 
     public ThumbnailFragment() {
     }
@@ -55,7 +56,8 @@ public class ThumbnailFragment extends Fragment {
         // adapt fake thumbnails to grid
         // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-        gridView.setAdapter(new ImageAdapter(getActivity(), movieList));
+        movieAdapter = new ImageAdapter(getActivity(), movieList);
+        gridView.setAdapter(movieAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -239,6 +241,11 @@ public class ThumbnailFragment extends Fragment {
                 Log.e(LOG_TAG, "Couldn't return movie data from " + moviesJsonStr);
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            movieAdapter.notifyDataSetChanged();
         }
     }
 }
