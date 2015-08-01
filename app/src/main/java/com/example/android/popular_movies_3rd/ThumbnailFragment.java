@@ -151,8 +151,7 @@ public class ThumbnailFragment extends Fragment {
 
         private void getThumbnailUrl(String poster_path, int index) {
             try {
-                URL url = new URL("http://image.tmdb.org/t/p/w185" + poster_path);
-                Log.v(LOG_TAG, "Error with URL: " + url);
+                URL url = new URL("http://image.tmdb.org/t/p/" + "w185" + poster_path);
                 movieList.add(index, url.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -161,15 +160,10 @@ public class ThumbnailFragment extends Fragment {
 
         @Override
         protected String[] doInBackground(String... params) {
-
-            // no point in refresh with no sort order
             if (params.length == 0) {
                 return null;
             }
 
-            /**
-             * sort grid by fetching data
-             */
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -192,7 +186,6 @@ public class ThumbnailFragment extends Fragment {
                         .build();
 
                 URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG, "Built URL: " + builtUri.toString());
 
                 // Create the request to themoviedb, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
