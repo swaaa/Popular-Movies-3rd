@@ -60,4 +60,8 @@ public class ImageAdapter extends BaseAdapter {
         Picasso.with(mContext).load(mMovieList.get(position)).into(thumbnail);
         return thumbnail;
     }
+
+    public void clear() {
+        mMovieList.clear();
+    }
 }

@@ -9,9 +9,4 @@
         android:title="@string/action_refresh"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_sort"
-        android:title="@string/action_sort"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
 </menu>

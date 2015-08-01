@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,15 +125,20 @@ public class ThumbnailFragment extends Fragment {
                 // Get the JSON object representing the movie
                 JSONObject movieObject = moviesArray.getJSONObject(i);
 
-                // fetch single Json elements
+                // Fetch single Json elements
                 title = movieObject.getString(TMDB_TITLE);
                 poster_path = movieObject.getString(TMDB_POSTER_PATH);
                 overview = movieObject.getString(TMDB_OVERVIEW);
                 vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
                 release_date = movieObject.getString(TMDB_RELEASE_DATE);
 
-                // fetch urls for thumbnails, which will be loaded in grid
-                getThumbnailUrl(poster_path, i);
+                // Clear List before adding new entries
+                if (i == 0) {
+                    movieList.clear();
+                }
+                // Fetch urls for thumbnails, which will be loaded in grid
+                String thumbnailUrlStr = "http://image.tmdb.org/t/p/" + "w185" + poster_path;
+                movieList.add(i, thumbnailUrlStr);
 
                 resultStrs[i] = "title: " + title + "\n"
                         + "poster_path: " + poster_path + "\n"
@@ -146,15 +150,6 @@ public class ThumbnailFragment extends Fragment {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
             }
             return resultStrs;
-        }
-
-        private void getThumbnailUrl(String poster_path, int index) {
-            try {
-                URL url = new URL("http://image.tmdb.org/t/p/" + "w185" + poster_path);
-                movieList.add(index, url.toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
@@ -235,8 +230,8 @@ public class ThumbnailFragment extends Fragment {
                 }
             }
             try {
-                // hardcode maximum of movies in grid
-                return getMoviesDataFromJson(moviesJsonStr, 10);
+                // hardcoded number of thumbnails in grid, maximum 20 per page
+                return getMoviesDataFromJson(moviesJsonStr, 20);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Couldn't return movie data from " + moviesJsonStr);
             }
