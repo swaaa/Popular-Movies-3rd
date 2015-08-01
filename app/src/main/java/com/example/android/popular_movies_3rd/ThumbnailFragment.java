@@ -106,10 +106,11 @@ public class ThumbnailFragment extends Fragment {
 
     public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
 
-        private String[] getMoviesDataFromJson(String moviesJsonStr, int numMovies)
+        private String[] getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
+            final String TMDB_PAGE = "page";
             final String TMDB_RESULTS = "results";
             final String TMDB_TITLE = "title";
             final String TMDB_POSTER_PATH = "poster_path";
@@ -117,42 +118,47 @@ public class ThumbnailFragment extends Fragment {
             final String TMDB_VOTE_AVERAGE = "vote_average";
             final String TMDB_RELEASE_DATE = "release_date";
 
+            final int moviesPerPage = 20;
+
             JSONObject moviesJson = new JSONObject(moviesJsonStr);
             JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
 
-            String[] resultStrs = new String[numMovies];
-            for(int i = 0; i < numMovies; i++) {
+            String[] resultStrs = new String[moviesPerPage];
 
-                String title;
-                String poster_path;
-                String overview;
-                String vote_average;
-                String release_date;
+                for (int i = 0; i < moviesPerPage; i++) { // Each 20 Movies
 
-                // Get the JSON object representing the movie
-                JSONObject movieObject = moviesArray.getJSONObject(i);
+                    String title;
+                    String poster_path;
+                    String overview;
+                    String vote_average;
+                    String release_date;
 
-                // Fetch single Json elements
-                title = movieObject.getString(TMDB_TITLE);
-                poster_path = movieObject.getString(TMDB_POSTER_PATH);
-                overview = movieObject.getString(TMDB_OVERVIEW);
-                vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
-                release_date = movieObject.getString(TMDB_RELEASE_DATE);
+                    // Get the JSON object representing the movie
+                    JSONObject movieObject = moviesArray.getJSONObject(i);
 
-                // Clear List before adding new entries
-                if (i == 0) {
-                    movieList.clear();
+                    // Fetch single Json elements
+                    title = movieObject.getString(TMDB_TITLE);
+                    poster_path = movieObject.getString(TMDB_POSTER_PATH);
+                    overview = movieObject.getString(TMDB_OVERVIEW);
+                    vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
+                    release_date = movieObject.getString(TMDB_RELEASE_DATE);
+
+                    // Clear List before adding new entries
+                    if (i == 0) {
+                        movieList.clear();
+                    }
+                    // Fetch urls for thumbnails, which will be loaded in grid
+                    String thumbnailUrlStr = "http://image.tmdb.org/t/p/" + "w185" + poster_path;
+                    movieList.add(i, thumbnailUrlStr);
+
+                    resultStrs[i] = "title: " + title + "\n"
+                            + "poster_path: " + poster_path + "\n"
+                            + "overview: " + overview + "\n"
+                            + "vote_average: " + vote_average + "\n"
+                            + "release_date: " + release_date + "\n";
                 }
-                // Fetch urls for thumbnails, which will be loaded in grid
-                String thumbnailUrlStr = "http://image.tmdb.org/t/p/" + "w185" + poster_path;
-                movieList.add(i, thumbnailUrlStr);
+//            }
 
-                resultStrs[i] = "title: " + title + "\n"
-                        + "poster_path: " + poster_path + "\n"
-                        + "overview: " + overview + "\n"
-                        + "vote_average: " + vote_average + "\n"
-                        + "release_date: " + release_date + "\n";
-            }
             for (String s : resultStrs) {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
             }
@@ -237,8 +243,9 @@ public class ThumbnailFragment extends Fragment {
                 }
             }
             try {
-                // hardcoded number of thumbnails in grid, maximum 20 per page
-                return getMoviesDataFromJson(moviesJsonStr, 20);
+                // Hardcoded number of thumbnails in grid, 20 per page[]
+                // Solution now: show only Top 100
+                return getMoviesDataFromJson(moviesJsonStr);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Couldn't return movie data from " + moviesJsonStr);
             }
