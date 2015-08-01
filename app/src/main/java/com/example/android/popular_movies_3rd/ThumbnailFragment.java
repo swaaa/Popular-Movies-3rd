@@ -61,8 +61,7 @@ public class ThumbnailFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // build Intent that starts DetailActivity
-                Intent details = new Intent(getActivity(), DetailActivity.class);
-                startActivity(details);
+                startActivity(new Intent(getActivity(), DetailActivity.class));
             }
         });
         return rootView;
