@@ -82,11 +82,21 @@ public class ThumbnailFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchMoviesTask moviesTask = new FetchMoviesTask();
-            moviesTask.execute("popularity.desc"); // hardcoding before sorting feature
+            update();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        update();
+        super.onStart();
+    }
+
+    private void update() {
+        FetchMoviesTask moviesTask = new FetchMoviesTask();
+        moviesTask.execute("popularity.desc"); // hardcoding before sorting feature
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
