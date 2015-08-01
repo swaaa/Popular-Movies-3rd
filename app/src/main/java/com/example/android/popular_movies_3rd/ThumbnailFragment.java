@@ -34,8 +34,14 @@ import java.util.List;
 public class ThumbnailFragment extends Fragment {
 
     private final String LOG_TAG = ThumbnailFragment.class.getSimpleName();
-    private List<String> movieList = new ArrayList<>();
+
     ImageAdapter movieAdapter;
+
+    private List<String> thumbnailList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
+    private List<String> overviewList = new ArrayList<>();
+    private List<String> ratingList = new ArrayList<>();
+    private List<String> releaseList = new ArrayList<>();
 
     public ThumbnailFragment() {
     }
@@ -49,21 +55,26 @@ public class ThumbnailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // insert layout
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // adapt fake thumbnails to grid
-        // insert Picasso?
         GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-        movieAdapter = new ImageAdapter(getActivity(), movieList);
+        movieAdapter = new ImageAdapter(getActivity(), thumbnailList);
         gridView.setAdapter(movieAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // build Intent that starts DetailActivity
-                Intent details = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, movieList.get(position));
+                Intent details = new Intent(getActivity(), DetailActivity.class);
+
+                // Adding data for Details
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_TITLE", titleList.get(position));
+                extras.putString("EXTRA_THUMBNAIL_URL_STRING", thumbnailList.get(position));
+                extras.putString("EXTRA_OVERVIEW", overviewList.get(position));
+                extras.putString("EXTRA_RATING", ratingList.get(position));
+                extras.putString("EXTRA_RELEASE", releaseList.get(position));
+                details.putExtras(extras);
+
                 startActivity(details);
             }
         });
@@ -112,7 +123,6 @@ public class ThumbnailFragment extends Fragment {
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
-            final String TMDB_PAGE = "page";
             final String TMDB_RESULTS = "results";
             final String TMDB_TITLE = "title";
             final String TMDB_POSTER_PATH = "poster_path";
@@ -145,21 +155,25 @@ public class ThumbnailFragment extends Fragment {
                     vote_average = movieObject.getString(TMDB_VOTE_AVERAGE);
                     release_date = movieObject.getString(TMDB_RELEASE_DATE);
 
-                    // Clear List before adding new entries
+                    // Free lists from old data
                     if (i == 0) {
-                        movieList.clear();
+                        titleList.clear();
+                        thumbnailList.clear();
+                        overviewList.clear();
+                        ratingList.clear();
+                        releaseList.clear();
                     }
-                    // Fetch urls for thumbnails, which will be loaded in grid
-                    String thumbnailUrlStr = "http://image.tmdb.org/t/p/" + "w185" + poster_path;
-                    movieList.add(i, thumbnailUrlStr);
+                    // Store relevant Data for thumbnails and DetailActivity
+                    titleList.add(title);
+                    thumbnailList.add("http://image.tmdb.org/t/p/" + "w185" + poster_path);
+                    overviewList.add(overview);
+                    ratingList.add(vote_average);
+                    releaseList.add(release_date);
 
-                    resultStrs[i] = "title: " + title + "\n"
-                            + "poster_path: " + poster_path + "\n"
-                            + "overview: " + overview + "\n"
-                            + "vote_average: " + vote_average + "\n"
-                            + "release_date: " + release_date + "\n";
+                    // For what should I use that?
+                    // Thumbnails are already stored in list for Details
+                    // resultStrs[i] = null;
                 }
-//            }
 
             for (String s : resultStrs) {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
