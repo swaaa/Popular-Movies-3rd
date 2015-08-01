@@ -26,6 +26,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.popular_movies_3rd.MainActivity" />
         </activity>
+
+        <fragment
+            android:name=".DetailActivityFragment"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".DetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.popular_movies_3rd.DetailActivity" />
+        </fragment>
+
     </application>
 
 </manifest>

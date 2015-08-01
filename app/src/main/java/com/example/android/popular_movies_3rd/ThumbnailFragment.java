@@ -1,5 +1,6 @@
 package com.example.android.popular_movies_3rd;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,9 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ThumbnailFragment extends Fragment {
 
     private final String LOG_TAG = ThumbnailFragment.class.getSimpleName();
@@ -63,6 +61,8 @@ public class ThumbnailFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // build Intent that starts DetailActivity
+                Intent details = new Intent(getActivity(), DetailActivity.class);
+                startActivity(details);
             }
         });
         return rootView;

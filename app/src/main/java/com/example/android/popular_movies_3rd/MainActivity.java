@@ -12,10 +12,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ActionBarActivity prevents having to use that
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.fragment, new ThumbnailFragment())
-//                .commit();
     }
 
     @Override
