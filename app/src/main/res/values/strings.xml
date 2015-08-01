@@ -10,7 +10,9 @@
     <!--Sort by Popularity/Rating Option-->
     <string name="pref_sort_label">Sort Order</string>
     <string name="pref_sort_key">sort</string>
-    <string name="pref_sort_default">popularity</string>
-    <string name="pref_sort_value_popularity">Popularity</string>
-    <string name="pref_sort_value_rating">Rating</string>
+    <string name="pref_sort_default">popularity.desc</string>
+    <string name="pref_sort_value_popularity">popularity.desc</string>
+    <string name="pref_sort_value_rating">vote_average.desc</string>
+    <string name="pref_sort_label_popularity">Popularity</string>
+    <string name="pref_sort_label_rating">Rating</string>
 </resources>

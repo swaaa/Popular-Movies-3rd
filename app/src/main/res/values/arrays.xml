@@ -6,7 +6,7 @@
     </string-array>
 
     <string-array name="pref_sort_labels">
-        <item>@string/pref_sort_value_popularity</item>
-        <item>@string/pref_sort_value_rating</item>
+        <item>@string/pref_sort_label_popularity</item>
+        <item>@string/pref_sort_label_rating</item>
     </string-array>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.android.popular_movies_3rd;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,7 +96,12 @@ public class ThumbnailFragment extends Fragment {
 
     private void update() {
         FetchMoviesTask moviesTask = new FetchMoviesTask();
-        moviesTask.execute("popularity.desc"); // hardcoding before sorting feature
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(getActivity());
+        String sort_by = prefs.getString(
+                getString(R.string.pref_sort_key),
+                getString(R.string.pref_sort_default));
+        moviesTask.execute(sort_by);
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
